@@ -10,6 +10,7 @@ from PIL import Image
 from tqdm import tqdm
 
 import lpips
+import facial_recognition
 from model import Generator
 
 
@@ -83,10 +84,10 @@ if __name__ == "__main__":
     # /home/stylegan2-ffhq-config-f.pt ,1024
     # /home/550000.pt, 256
     parser.add_argument(
-        "--ckpt", type=str, default='/home/stylegan2-ffhq-config-f.pt', help="path to the model checkpoint"
+        "--ckpt", type=str, default='/media/cwy/sdb1/data/weights/550000.pt', help="path to the model checkpoint"
     )
     parser.add_argument( 
-        "--size", type=int, default=1024, help="output image sizes of the generator"
+        "--size", type=int, default=256, help="output image sizes of the generator"
     )
     parser.add_argument(
         "--lr_rampup",
@@ -167,6 +168,7 @@ if __name__ == "__main__":
     percept = lpips.PerceptualLoss(
         model="net-lin", net="vgg", use_gpu=device.startswith("cuda")
     )
+    # id_loss = facial_recognition.IDLoss(use_gpu=device.startswith("cuda"))
 
     noises_single = g_ema.make_noise()
     noises = []
@@ -210,10 +212,19 @@ if __name__ == "__main__":
             img_gen = img_gen.mean([3, 5])
 
         p_loss = percept(img_gen, imgs).sum()
+        # print('ori img:',torch.max(imgs))
+        # print('gen img:',torch.max(img_gen))
+        # identity_loss = id_loss(img_gen,imgs)[0]
+        
         n_loss = noise_regularize(noises)
         mse_loss = F.mse_loss(img_gen, imgs)
 
-        loss = p_loss + args.noise_regularize * n_loss + args.mse * mse_loss
+        # the original loss: the result is 550000_align-000015-project_256_step500_perceptual_loss.png
+        loss =  p_loss + args.noise_regularize * n_loss + args.mse * mse_loss 
+
+        # we found this loss can produce more fine-grained image: the result is 550000_align-000015-project_256_step500_id_perceptual_loss.png
+        # however, if only use id loss, the generated image would change: the result is 550000_align-000015-project_256_step500_id_loss.png
+        # loss =  p_loss + args.noise_regularize * n_loss + args.mse * mse_loss + identity_loss
 
         optimizer.zero_grad()
         loss.backward()

@@ -57,3 +57,11 @@ Whether the image is of high quality has a **huge impact** on the results. It is
 original             |  official inverted  |  unofficial inverted
 :-------------------------:|:-------------------------: | :-------------------------: 
 <img src='https://github.com/audio-visual/investigate_stylegan/blob/main/samples/low_quality/0001200.jpg' width='256px'/> | <img src='https://github.com/audio-visual/investigate_stylegan/blob/main/results/stylegan2-ffhq-config-f_0001200-project_1024_step500.png' width='256px'/> | <img src='https://github.com/audio-visual/investigate_stylegan/blob/main/results/550000_0001200-project_256_step500.png' width='256px'/> 
+
+
+## Others: add id_loss can improve results
+You can uncomment the `id_loss` related codes to reproduce this result
+
+lpips loss             |  id loss  |  lpips+id loss
+:-------------------------:|:-------------------------: | :-------------------------: 
+<img src='https://github.com/audio-visual/investigate_stylegan/blob/main/results/550000_align-000015-project_256_step500_perceptual_loss.png' width='256px'/> | <img src='https://github.com/audio-visual/investigate_stylegan/blob/main/results/550000_align-000015-project_256_step500_id_loss.png' width='256px'/> | <img src='https://github.com/audio-visual/investigate_stylegan/blob/main/results/550000_align-000015-project_256_step500_id_perceptual_loss.png' width='256px'/> 
