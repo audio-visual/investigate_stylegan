@@ -1,8 +1,8 @@
 # investigate_stylegan
  investigate the data needed in stylegan  
 
-ref: https://github.com/rosinality/stylegan2-pytorch
-
+ref: https://github.com/rosinality/stylegan2-pytorch     
+To reproduce the results, you can refer to `samples/get_samples.py` to generate images, and then use `projector.py` to invert and restore images.
 # Conclusions
 
 ## Prerequisite
