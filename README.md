@@ -1,7 +1,7 @@
 # investigate_stylegan
  investigate the data needed in stylegan  
 
-https://github.com/rosinality/stylegan2-pytorch
+ref: https://github.com/rosinality/stylegan2-pytorch
 
 # Conclusions
 
@@ -10,7 +10,7 @@ https://github.com/rosinality/stylegan2-pytorch
 Therefore, subsequent experiments also follow this principle  
 
 The left side is the official weight, trained on the 1024x1024 size, reversed the aligned 512x512 image, and restored to the 256 size,  
-The left side is the official weight, trained on the 256x256 size, reversed the aligned 512x512 image, and restored to the 256 size, 
+The right side is the unofficial weight, trained on the 256x256 size, reversed the aligned 512x512 image, and restored to the 256 size. 
 1024x1024->256            |  256x256->256
 :-------------------------:|:-------------------------:
 <img src='https://github.com/audio-visual/investigate_stylegan/blob/main/results/stylegan2-ffhq-config-f_align-000015-project_256_step500.png' width='256px'/> | <img src='https://github.com/audio-visual/investigate_stylegan/blob/main/results/550000_align-000015-project_256_step500.png' width='256px'/>
