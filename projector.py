@@ -80,10 +80,10 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Image projector to the generator latent spaces"
     )
-    # /home/cwy/下载/stylegan2-ffhq-config-f.pt ,1024
-    # /home/cwy/下载/550000.pt, 256
+    # /home/stylegan2-ffhq-config-f.pt ,1024
+    # /home/550000.pt, 256
     parser.add_argument(
-        "--ckpt", type=str, default='/home/cwy/下载/stylegan2-ffhq-config-f.pt', help="path to the model checkpoint"
+        "--ckpt", type=str, default='/home/stylegan2-ffhq-config-f.pt', help="path to the model checkpoint"
     )
     parser.add_argument( 
         "--size", type=int, default=1024, help="output image sizes of the generator"
