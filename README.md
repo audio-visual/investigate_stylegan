@@ -1,49 +1,59 @@
 # investigate_stylegan
- investigate the data needed in stylegan
+ investigate the data needed in stylegan  
 
 https://github.com/rosinality/stylegan2-pytorch
 
-# whether human faces need to be frontalized?
+# Conclusions
+
+## Prerequisite
+**It is best to keep the size of the generated/restored image consistent with the size used for model training**, otherwise the performance will decrease, as shown in the figure below.   
+Therefore, subsequent experiments also follow this principle  
+
+The left side is the official weight, trained on the 1024x1024 size, reversed the aligned 512x512 image, and restored to the 256 size,  
+The left side is the official weight, trained on the 256x256 size, reversed the aligned 512x512 image, and restored to the 256 size, 
+1024x1024->256            |  256x256->256
+:-------------------------:|:-------------------------:
+<img src='https://github.com/audio-visual/investigate_stylegan/blob/main/results/stylegan2-ffhq-config-f_align-000015-project_256_step500.png' width='256px'/> | <img src='https://github.com/audio-visual/investigate_stylegan/blob/main/results/550000_align-000015-project_256_step500.png' width='256px'/>
 
 ## Q1: whether human faces need to be aligned?
-https://github.com/happy-jihye/FFHQ-Alignment/tree/master/FFHQ-Alignmnet
+https://github.com/happy-jihye/FFHQ-Alignment/tree/master/FFHQ-Alignmnet  
+Alignment roughly means
+1) Only capture facial areas
+2) Eyes on the same horizontal line  
+for example:  
+original images:
+   ![alt original images](https://github.com/audio-visual/investigate_stylegan/blob/main/results/0tx4o3yXM64_0.png?raw=true)
+aligned images:
+  ![alt original images](https://github.com/audio-visual/investigate_stylegan/blob/main/results/0tx4o3yXM64_0_align.png?raw=true)
+original images:
+   ![alt original images](https://github.com/audio-visual/investigate_stylegan/blob/main/results/0xjr1vVzFKY_0.png?raw=true)
+aligned images:
+  ![alt original images](https://github.com/audio-visual/investigate_stylegan/blob/main/results/0xjr1vVzFKY_0_align.png?raw=true)
+**Conclusion:**
+Whether the image is aligned has a **significant impact** on the results
 
+The images in the first row are the original images, the images in the second row are the results of inversion using official weights (trained on 1024x1024), and the images in the third row are the results of inversion using unofficial weights (trained on 256x256)
 
-# whether imaged need to be high-quality? 
-结论：
-1、生成图像的大小最好与模型训练用的保持一致，不然如下图所示，左侧是官方权重，在1024*1024大小上训练，逆向化对齐后的512像素图像，并还原至256大小
-/home/cwy/文档/GitHub/investigate_stylegan/stylegan2-ffhq-config-f_align-000015-project_256_step500.png
-右侧是非官方权重，在256*256大小上训练，逆向化对齐后的512像素图像，并还原至256大小
-/home/cwy/文档/GitHub/investigate_stylegan/550000_align-000015-project_256_step500.png
+not aligned             |  aligned
+:-------------------------:|:-------------------------:
+<img src='https://github.com/audio-visual/investigate_stylegan/blob/main/samples/not_align/000015.png' width='50%'/> | <img src='https://github.com/audio-visual/investigate_stylegan/blob/main/samples/not_align/align-000015.png' width='50%'/>
+<img src='https://github.com/audio-visual/investigate_stylegan/blob/main/results/stylegan2-ffhq-config-f_000015-project_1024_step500.png' width='50%'/> | <img src='https://github.com/audio-visual/investigate_stylegan/blob/main/results/stylegan2-ffhq-config-f_align-000015-project_1024_step500.png' width='50%'/>
+<img src='https://github.com/audio-visual/investigate_stylegan/blob/main/results/550000_000015-project_256_step500.png' width='50%'/> | <img src='https://github.com/audio-visual/investigate_stylegan/blob/main/results/550000_align-000015-project_256_step500.png' width='50%'/> 
 
-2、图像是否align对结果影响巨大，无论是否为官方权重
-第一行为原图，非对齐，对齐
-/home/cwy/文档/GitHub/investigate_stylegan/samples/not_align/000015.png
-/home/cwy/文档/GitHub/investigate_stylegan/samples/not_align/align-000015.png
-第二行官方权重，非对齐，对齐，1024
-/home/cwy/文档/GitHub/investigate_stylegan/stylegan2-ffhq-config-f_000015-project_1024_step500.png
-/home/cwy/文档/GitHub/investigate_stylegan/stylegan2-ffhq-config-f_align-000015-project_1024_step500.png
-第三行非官方权重，非对齐，对齐，256
-/home/cwy/文档/GitHub/investigate_stylegan/550000_000015-project_256_step500.png
-/home/cwy/文档/GitHub/investigate_stylegan/550000_align-000015-project_256_step500.png
+## Q2: whether human faces need to be frontalized?
+**Conclusion:**
+Whether the image is frontalize has a slight impact on the results  
+Expressions, facial features, hair, and other **details cannot be restored**, but are generally **within an acceptable range**   
 
+Notice that, if we want to explore the impact of head angle on the results, we should exclude other factors (such as the need for images to be of high quality and aligned) 
+original             |  aligned  | official inverted | unofficial inverted
+:-------------------------:|:-------------------------: | :-------------------------: | :-------------------------:
+<img src='https://github.com/audio-visual/investigate_stylegan/blob/main/samples/0xjr1vVzFKY_0/000035.png' width='256px'/> | <img src='https://github.com/audio-visual/investigate_stylegan/blob/main/samples/0xjr1vVzFKY_0_align/align-000035.png' width='256px'/> | <img src='https://github.com/audio-visual/investigate_stylegan/blob/main/results/stylegan2-ffhq-config-f_align-000035-project_1024_step500.png' width='256px'/> | <img src='https://github.com/audio-visual/investigate_stylegan/blob/main/results/550000_align-000035-project_256_step500.png' width='256px'/>
 
-3、图像是否frontalize对结果有影响
-表情、五官、头发等细节无法还原，但总体在可接受范围内
-第一张为原图，第二张为对齐后的，第三张为官方权重(1024)，第四张为非官方权重(256)
-/home/cwy/文档/GitHub/investigate_stylegan/samples/0xjr1vVzFKY_0/000035.png
+## Q3: whether imaged need to be high-quality? 
+**Conclusion:**
+Whether the image is of high quality has a **huge impact** on the results. It is speculated that this may be due to the weak generalization of lpips.
 
-/home/cwy/文档/GitHub/investigate_stylegan/samples/0xjr1vVzFKY_0_align/align-000035.png
-
-/home/cwy/文档/GitHub/investigate_stylegan/stylegan2-ffhq-config-f_align-000035-project_1024_step500.png
-
-
-/home/cwy/文档/GitHub/investigate_stylegan/550000_align-000035-project_256_step500.png
-
-
-4、图像是否高质量对结果影响巨大，猜测这可能是由于lpips的泛化性不强导致的
-第一张为原图，第二张为官方权重(1024), 第三张为非官方权重(256)
-
-/home/cwy/文档/GitHub/investigate_stylegan/samples/low_quality/0001200.jpg
-/home/cwy/文档/GitHub/investigate_stylegan/stylegan2-ffhq-config-f_0001200-project_1024_step500.png
-/home/cwy/文档/GitHub/investigate_stylegan/550000_0001200-project_256_step500.png
+original             |  official inverted  |  unofficial inverted
+:-------------------------:|:-------------------------: | :-------------------------: 
+<img src='https://github.com/audio-visual/investigate_stylegan/blob/main/samples/low_quality/0001200.jpg' width='256px'/> | <img src='https://github.com/audio-visual/investigate_stylegan/blob/main/results/stylegan2-ffhq-config-f_0001200-project_1024_step500.png' width='256px'/> | <img src='https://github.com/audio-visual/investigate_stylegan/blob/main/results/550000_0001200-project_256_step500.png' width='256px'/> 
