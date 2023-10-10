@@ -2,7 +2,7 @@
  investigate the data needed in stylegan  
 
 ref: https://github.com/rosinality/stylegan2-pytorch     
-To reproduce the results, you can refer to `samples/get_samples.py` to generate images, and then use `projector.py` to invert and restore images (to make this project self-contained, we upload the weights, you can download from release). 
+To reproduce the results, you can refer to `samples/get_samples.py` to generate images, and then use `projector.py` to invert and restore images (to make this project self-contained, we upload the weights, you can download from the Releases). 
 # Conclusions
 
 ## Prerequisite
